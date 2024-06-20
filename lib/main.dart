@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -28,8 +27,8 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This class is the configuration for the state. 
-  // It holds the values (in this case the title) provided by the parent and used by the build method of the State. 
+  // This class is the configuration for the state.
+  // It holds the values (in this case the title) provided by the parent and used by the build method of the State.
   // Fields in a Widget subclass are always marked "final".
   final String title;
 
@@ -48,50 +47,48 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
 
     // This method is rerun every time setState is called, for instance as done by the _incrementCounter method above.
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade400,
         title: Text(widget.title),
+        backgroundColor: Colors.pink.shade400,
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-      body: Center (
-        // Center is a layout widget. 
-        // It takes a single child and positions it in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. 
-          // It takes a list of children and arranges them vertically. By default, it sizes itself to fit its children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: Container(
-                width: deviceWidth,
-                child: const Text('You have pushed the button this many times:', style: TextStyle(fontSize: 32),),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            // flex: 1,
+            child: Container(
+              width: deviceWidth,
+              alignment: Alignment.center,
+              child: const Text(
+                'You have pushed the button this many times:',
+                style: TextStyle(fontSize: 32),
+                textAlign: TextAlign.center,
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Text('$_counter', style: const TextStyle(fontSize: 40))
+          ),
+          Expanded(
+            // flex: 1,
+            child: Container(
+              width: deviceWidth,
+              alignment: Alignment.center,
+              child: Text('$_counter', style: const TextStyle(fontSize: 40)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       backgroundColor: Colors.pink.shade100,
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         backgroundColor: Colors.pink.shade400,
+        foregroundColor: Colors.white,
         child: const Icon(Icons.add),
-      ), 
+      ),
     );
   }
 }
