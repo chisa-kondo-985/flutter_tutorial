@@ -80,14 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('入力エラー'),
-                            content: Text('数字を入力してください'),
+                            title: const Text('入力エラー'),
+                            content: const Text('数字を入力してください'),
                             actions: [
                               TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('OK'))
+                                  child: const Text('OK'))
                             ],
                           );
                         });
