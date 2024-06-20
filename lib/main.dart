@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-// This is the main function to launch the MyApp.
+// This is the main function to launch the this application.
 void main() {
   runApp(const MyApp());
 }
@@ -18,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         brightness: Brightness.light,
+        useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo'),
     );
@@ -25,27 +25,18 @@ class MyApp extends StatelessWidget {
 }
 
 // Declare the MyHomePage class.
-// This widget is the home page of your application.
+// This widget is the home page of this application.
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This class is the configuration for the state.
-  // It holds the values (in this case the title) provided by the parent and used by the build method of the State.
-  // Fields in a Widget subclass are always marked "final".
   final String title;
+
+  const MyHomePage({required this.title});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               alignment: Alignment.center,
-              child: const SizedBox(
+              child: SizedBox(
                 width: 300,
                 child: TextField(
+                  controller: _controller,
                   maxLength: 10,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: '数字を入力してください',
                   ),
                 ),
@@ -76,19 +68,56 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               alignment: Alignment.center,
-              child: Text('$_counter', style: const TextStyle(fontSize: 40)),
+              child: ElevatedButton(
+                onPressed: () {
+                  final inputNumber = int.tryParse(_controller.text);
+                  if (inputNumber != null) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                      return NextPage(inputNumber: inputNumber);
+                    }));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('入力エラー'),
+                            content: Text('数字を入力してください'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'))
+                            ],
+                          );
+                        });
+                  }
+                },
+                child: const Text('次へ'),
+              ),
             ),
           ),
         ],
       ),
       backgroundColor: Colors.pink.shade100,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+    );
+  }
+}
+
+class NextPage extends StatelessWidget {
+  final int inputNumber;
+  NextPage({required this.inputNumber});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Next Page'),
         backgroundColor: Colors.pink.shade400,
         foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
+        centerTitle: true,
       ),
+      body: Center(child: Text('$inputNumber')),
     );
   }
 }
