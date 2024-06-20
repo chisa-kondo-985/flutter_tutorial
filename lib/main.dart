@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 // This is the main function to launch the MyApp.
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
       ),
+      home: const MyHomePage(title: 'Flutter Demo'),
     );
   }
 }
@@ -47,8 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-
     // This method is rerun every time setState is called, for instance as done by the _incrementCounter method above.
     return Scaffold(
       appBar: AppBar(
@@ -60,21 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            // flex: 1,
             child: Container(
-              width: deviceWidth,
               alignment: Alignment.center,
-              child: const Text(
-                'You have pushed the button this many times:',
-                style: TextStyle(fontSize: 32),
-                textAlign: TextAlign.center,
+              child: const SizedBox(
+                width: 300,
+                child: TextField(
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                    labelText: '数字を入力してください',
+                  ),
+                ),
               ),
             ),
           ),
           Expanded(
-            // flex: 1,
             child: Container(
-              width: deviceWidth,
               alignment: Alignment.center,
               child: Text('$_counter', style: const TextStyle(fontSize: 40)),
             ),
