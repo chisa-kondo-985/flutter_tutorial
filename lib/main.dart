@@ -1,18 +1,20 @@
+// import material.dart package.
 import 'package:flutter/material.dart';
 
-// This is the main function to launch the this application.
+// === This is the main function to launch this application. ===
 void main() {
   runApp(const MyApp());
 }
 
-// Declare the MyApp class.
-// This widget is the root of MyApp.
+// === This widget is the root of this application. ===
 class MyApp extends StatelessWidget {
-  // Initialize the MyApp class variable.
+  // Initialize the MyApp widget's variable.
   const MyApp({super.key});
 
   @override
+  // Build the MyApp (statelessWidget) widget including all the children widgets whenever the state is changed.
   Widget build(BuildContext context) {
+    // Decide application basic settings.
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -24,8 +26,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Declare the MyHomePage class.
-// This widget is the home page of this application.
+// === This widget is the home page of this application. ===
 class MyHomePage extends StatefulWidget {
   final String title;
 
@@ -35,21 +36,27 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// === This widget is the state of this application.
 class _MyHomePageState extends State<MyHomePage> {
+  // Prepare the controller for the text field.
   final TextEditingController _controller = TextEditingController();
 
+  // Build the _MyHomePageState (State) widget including all the children widgets whenever the state is changed.
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done by the _incrementCounter method above.
+    // Decide the application UI using the Scaffold widget.
     return Scaffold(
+      // === Application Bar ===
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.pink.shade400,
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
+      // === Application Body ===
       body: Column(
         children: <Widget>[
+          // Input Field
           Expanded(
             child: Container(
               alignment: Alignment.center,
@@ -65,12 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
+          // "Send" Button
           Expanded(
             child: Container(
               alignment: Alignment.center,
               child: ElevatedButton(
+                // If this button is pressed and the inputNumber is int type and NOT null, the screen will transition.
+                // And the inputNumber is shown on the next page.
+                // If inputNumber is null, the Input Error dialog will be appear.
                 onPressed: () {
                   final inputNumber = int.tryParse(_controller.text);
+
                   if (inputNumber != null) {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                       return NextPage(inputNumber: inputNumber);
@@ -93,12 +105,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                   }
                 },
-                child: const Text('次へ'),
+                child: const Text('送信'),
               ),
             ),
           ),
         ],
       ),
+      // === Application Background Color ===
       backgroundColor: Colors.pink.shade100,
     );
   }
