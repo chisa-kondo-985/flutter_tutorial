@@ -1,5 +1,6 @@
 // import material.dart package.
 import 'package:flutter/material.dart';
+import './nextpage.dart';
 
 // === This is the main function to launch this application. ===
 void main() {
@@ -113,24 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       // === Application Background Color ===
       backgroundColor: Colors.pink.shade100,
-    );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  final int inputNumber;
-  NextPage({required this.inputNumber});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Next Page'),
-        backgroundColor: Colors.pink.shade400,
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      body: Center(child: Text('$inputNumber')),
     );
   }
 }
