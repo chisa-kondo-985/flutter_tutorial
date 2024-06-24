@@ -1,6 +1,58 @@
 // import material.dart package.
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import './nextpage.dart';
+
+// Prepare items for the Location list.
+const List<String> _locationNames = <String>[
+  '北海道',
+  '青森県',
+  '岩手県',
+  '宮城県',
+  '秋田県',
+  '山形県',
+  '福島県',
+  '茨城県',
+  '栃木県',
+  '群馬県',
+  '埼玉県',
+  '千葉県',
+  '東京都',
+  '神奈川県',
+  '新潟県',
+  '富山県',
+  '石川県',
+  '福井県',
+  '山梨県',
+  '長野県',
+  '岐阜県',
+  '静岡県',
+  '愛知県',
+  '三重県',
+  '滋賀県',
+  '京都府',
+  '大阪府',
+  '兵庫県',
+  '奈良県',
+  '和歌山県',
+  '鳥取県',
+  '島根県',
+  '岡山県',
+  '広島県',
+  '山口県',
+  '徳島県',
+  '香川県',
+  '愛媛県',
+  '高知県',
+  '福岡県',
+  '佐賀県',
+  '長崎県',
+  '熊本県',
+  '大分県',
+  '宮崎県',
+  '鹿児島県',
+  '沖縄県',
+];
 
 // === This is the main function to launch this application. ===
 void main() {
@@ -22,98 +74,175 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo'),
+      home: Scaffold(
+        // === Application Bar ===
+        appBar: AppBar(
+          title: const Text('Flutter Demo'),
+          backgroundColor: Colors.blue.shade400,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        // === Application Body ===
+        body: const ApplicationBody(),
+        // === Application Background Color ===
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }
 
 // === This widget is the home page of this application. ===
-class MyHomePage extends StatefulWidget {
-  final String title;
-
-  const MyHomePage({required this.title});
+class ApplicationBody extends StatefulWidget {
+  const ApplicationBody({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ApplicationBody> createState() => _FormState();
 }
 
 // === This widget is the state of this application.
-class _MyHomePageState extends State<MyHomePage> {
-  // Prepare the controller for the text field.
-  final TextEditingController _controller = TextEditingController();
+class _FormState extends State<ApplicationBody> {
+  // Prepare keys for radio button.
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _text = '';
 
-  // Build the _MyHomePageState (State) widget including all the children widgets whenever the state is changed.
+  // Prepare items for the CupertinoPicker.
+  int _selectedLocation = 0;
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: ((BuildContext context) => Container(
+            height: 300,
+            padding: const EdgeInsets.only(top: 6.0),
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: SafeArea(
+              top: false,
+              child: child,
+            ),
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Decide the application UI using the Scaffold widget.
-    return Scaffold(
-      // === Application Bar ===
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Colors.pink.shade400,
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      // === Application Body ===
-      body: Column(
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // Input Field
-          Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: 300,
-                child: TextField(
-                  controller: _controller,
-                  maxLength: 10,
-                  decoration: const InputDecoration(
-                    labelText: '数字を入力してください',
-                  ),
-                ),
-              ),
+          const SizedBox(
+            width: 300,
+            child: Text(
+              '氏名',
+              textAlign: TextAlign.start,
             ),
           ),
-          // "Send" Button
-          Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                // If this button is pressed and the inputNumber is int type and NOT null, the screen will transition.
-                // And the inputNumber is shown on the next page.
-                // If inputNumber is null, the Input Error dialog will be appear.
-                onPressed: () {
-                  final inputNumber = int.tryParse(_controller.text);
-
-                  if (inputNumber != null) {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      return NextPage(inputNumber: inputNumber);
-                    }));
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('入力エラー'),
-                            content: const Text('数字を入力してください'),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'))
-                            ],
-                          );
-                        });
-                  }
-                },
-                child: const Text('送信'),
-              ),
+          SizedBox(
+            width: 300,
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              decoration: const InputDecoration(hintText: '山田 太郎', counterStyle: TextStyle(color: Colors.black26)),
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return '名前を入力してください。';
+                }
+                return null;
+              },
             ),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          const SizedBox(
+            width: 300,
+            child: Text(
+              '性別',
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Radio(
+                value: '男',
+                groupValue: _text,
+                onChanged: (value) {
+                  setState(() {
+                    _text = value!;
+                  });
+                },
+              ),
+              const Text('男'),
+              Radio(
+                value: '女',
+                groupValue: _text,
+                onChanged: (value) {
+                  setState(() {
+                    _text = value!;
+                  });
+                },
+              ),
+              const Text('女'),
+              Radio(
+                value: 'その他',
+                groupValue: _text,
+                onChanged: (value) {},
+              ),
+              const Text('その他'),
+            ],
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          const SizedBox(
+            width: 300,
+            child: Text(
+              '出身地',
+              textAlign: TextAlign.start,
+            ),
+          ),
+          CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: () => _showDialog(
+                    CupertinoPicker(
+                      magnification: 1.22,
+                      squeeze: 1.0,
+                      useMagnifier: true,
+                      itemExtent: 32.0,
+                      scrollController: FixedExtentScrollController(initialItem: _selectedLocation),
+                      onSelectedItemChanged: (int selectedItem) {
+                        setState(() {
+                          _selectedLocation = selectedItem;
+                        });
+                      },
+                      children: List<Widget>.generate(_locationNames.length, (int index) {
+                        return Center(child: Text(_locationNames[index]));
+                      }),
+                    ),
+                  ),
+              child: Text(
+                _locationNames[_selectedLocation],
+                style: const TextStyle(
+                  fontSize: 22.0,
+                ),
+              )),
+          const SizedBox(
+            height: 40,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return NextPage();
+                }));
+              }
+            },
+            child: const Text('送信'),
           ),
         ],
       ),
-      // === Application Background Color ===
-      backgroundColor: Colors.pink.shade100,
     );
   }
 }
