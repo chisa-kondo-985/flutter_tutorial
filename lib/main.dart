@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// === This widget is the home page of this application. ===
+// === This widget is the body element of this application. ===
 class ApplicationBody extends StatefulWidget {
   const ApplicationBody({super.key});
 
@@ -105,18 +105,25 @@ class _FormState extends State<ApplicationBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _text = '';
 
-  // Prepare items for the CupertinoPicker.
+  // Prepare the variable and function for the CupertinoPicker.
   int _selectedLocation = 0;
   void _showDialog(Widget child) {
+    // This is the showCupertinoModalPopup function.
+    // Shows a modal iOS-style popup that slides up from the bottom of the screen.
     showCupertinoModalPopup<void>(
       context: context,
       builder: ((BuildContext context) => Container(
+            // This is height of the picker area.
             height: 300,
+            // This is creating the 6px of padding on the top of the picker area.
             padding: const EdgeInsets.only(top: 6.0),
+            // This is creating the margin of bottom of the picker area.
             margin: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
+            // This is picker's Background Color. If this is not defined, the picker became transparent.
             color: CupertinoColors.systemBackground.resolveFrom(context),
+            // This insets its child by sufficient padding to avoid intrusions by the operating system.
             child: SafeArea(
               top: false,
               child: child,
@@ -132,6 +139,7 @@ class _FormState extends State<ApplicationBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          // === Input User Name ===
           const SizedBox(
             width: 300,
             child: Text(
@@ -155,6 +163,7 @@ class _FormState extends State<ApplicationBody> {
           const SizedBox(
             height: 40,
           ),
+          // === Input User Gender ===
           const SizedBox(
             width: 300,
             child: Text(
@@ -188,7 +197,11 @@ class _FormState extends State<ApplicationBody> {
               Radio(
                 value: 'その他',
                 groupValue: _text,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  setState(() {
+                    _text = value!;
+                  });
+                },
               ),
               const Text('その他'),
             ],
@@ -196,6 +209,7 @@ class _FormState extends State<ApplicationBody> {
           const SizedBox(
             height: 40,
           ),
+          // === Input User's Hometown ===
           const SizedBox(
             width: 300,
             child: Text(
@@ -208,10 +222,15 @@ class _FormState extends State<ApplicationBody> {
               onPressed: () => _showDialog(
                     CupertinoPicker(
                       magnification: 1.22,
+                      // This is for the angle of the picker wheel.
                       squeeze: 1.0,
+                      // This is for enlarging the center item of the wheel.
                       useMagnifier: true,
+                      // This is for the height of the picker items.
                       itemExtent: 32.0,
+                      // This is the controller to read and control the current item, and to set the initial item.
                       scrollController: FixedExtentScrollController(initialItem: _selectedLocation),
+                      // An option callback when the currently centered item changes.
                       onSelectedItemChanged: (int selectedItem) {
                         setState(() {
                           _selectedLocation = selectedItem;
@@ -231,8 +250,10 @@ class _FormState extends State<ApplicationBody> {
           const SizedBox(
             height: 40,
           ),
+          // === Send button ===
           ElevatedButton(
             onPressed: () {
+              // TODO: Nextpage process!!!
               if (_formKey.currentState!.validate()) {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                   return NextPage();
