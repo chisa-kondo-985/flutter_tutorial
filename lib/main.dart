@@ -101,9 +101,12 @@ class ApplicationBody extends StatefulWidget {
 
 // === This widget is the state of this application.
 class _FormState extends State<ApplicationBody> {
+  // Prepare variable for the input text.
+  final TextEditingController _controller = TextEditingController();
+
   // Prepare keys for radio button.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _text = '';
+  String _genderText = '';
 
   // Prepare the variable and function for the CupertinoPicker.
   int _selectedLocation = 0;
@@ -150,6 +153,7 @@ class _FormState extends State<ApplicationBody> {
           SizedBox(
             width: 300,
             child: TextFormField(
+              controller: _controller,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(hintText: '山田 太郎', counterStyle: TextStyle(color: Colors.black26)),
               validator: (String? value) {
@@ -175,31 +179,31 @@ class _FormState extends State<ApplicationBody> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Radio(
-                value: '男',
-                groupValue: _text,
+                value: '男性',
+                groupValue: _genderText,
                 onChanged: (value) {
                   setState(() {
-                    _text = value!;
+                    _genderText = value!;
                   });
                 },
               ),
-              const Text('男'),
+              const Text('男性'),
               Radio(
-                value: '女',
-                groupValue: _text,
+                value: '女性',
+                groupValue: _genderText,
                 onChanged: (value) {
                   setState(() {
-                    _text = value!;
+                    _genderText = value!;
                   });
                 },
               ),
-              const Text('女'),
+              const Text('女性'),
               Radio(
                 value: 'その他',
-                groupValue: _text,
+                groupValue: _genderText,
                 onChanged: (value) {
                   setState(() {
-                    _text = value!;
+                    _genderText = value!;
                   });
                 },
               ),
@@ -253,11 +257,13 @@ class _FormState extends State<ApplicationBody> {
           // === Send button ===
           ElevatedButton(
             onPressed: () {
-              // TODO: Nextpage process!!!
               if (_formKey.currentState!.validate()) {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                  return NextPage();
-                }));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NextPage(
+                          textFieldValue: _controller.text,
+                          radioValue: _genderText,
+                          pickerValue: _locationNames[_selectedLocation],
+                        )));
               }
             },
             child: const Text('送信'),
