@@ -1,6 +1,7 @@
 // import material.dart package.
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import './nextpage.dart';
 
 // Prepare items for the Location list.
@@ -102,14 +103,15 @@ class ApplicationBody extends StatefulWidget {
 // === This widget is the state of this application.
 class _FormState extends State<ApplicationBody> {
   // Prepare variable for the input text.
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _nameTextController = TextEditingController();
 
   // Prepare keys for radio button.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedGender;
 
   // Prepare the variable and function for the CupertinoPicker.
-  int _selectedLocation = 0;
+  final TextEditingController _hometownTextController = TextEditingController(text: '選択してください');
+  int _selectedLocation = -1;
   void _showDialog(Widget child) {
     // This is the showCupertinoModalPopup function.
     // Shows a modal iOS-style popup that slides up from the bottom of the screen.
@@ -153,7 +155,7 @@ class _FormState extends State<ApplicationBody> {
           SizedBox(
             width: 300,
             child: TextFormField(
-              controller: _controller,
+              controller: _nameTextController,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(hintText: '山田 太郎', counterStyle: TextStyle(color: Colors.black26)),
               validator: (String? value) {
@@ -234,9 +236,12 @@ class _FormState extends State<ApplicationBody> {
               textAlign: TextAlign.start,
             ),
           ),
-          CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => _showDialog(
+          SizedBox(
+            width: 300,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showDialog(
                     CupertinoPicker(
                       magnification: 1.22,
                       // This is for the angle of the picker wheel.
@@ -251,19 +256,36 @@ class _FormState extends State<ApplicationBody> {
                       onSelectedItemChanged: (int selectedItem) {
                         setState(() {
                           _selectedLocation = selectedItem;
+                          if (_selectedLocation >= 0 && _selectedLocation < _locationNames.length) {
+                            _hometownTextController.text = _locationNames[_selectedLocation];
+                          } else {
+                            _hometownTextController.text = '選択してください';
+                          }
                         });
                       },
                       children: List<Widget>.generate(_locationNames.length, (int index) {
-                        return Center(child: Text(_locationNames[index]));
+                        return Text(_locationNames[index]);
                       }),
                     ),
-                  ),
-              child: Text(
-                _locationNames[_selectedLocation],
-                style: const TextStyle(
-                  fontSize: 22.0,
+                  );
+                });
+              },
+              child: AbsorbPointer(
+                absorbing: true,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _hometownTextController,
+                  readOnly: true,
+                  validator: (value) {
+                    if (_selectedLocation < 0 || _selectedLocation >= _locationNames.length) {
+                      return '出身地を選択してください';
+                    }
+                    return null;
+                  },
                 ),
-              )),
+              ),
+            ),
+          ),
           const SizedBox(
             height: 40,
           ),
@@ -273,7 +295,7 @@ class _FormState extends State<ApplicationBody> {
               if (_formKey.currentState!.validate()) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NextPage(
-                          textFieldValue: _controller.text,
+                          textFieldValue: _nameTextController.text,
                           radioValue: selectedGender,
                           pickerValue: _locationNames[_selectedLocation],
                         )));
