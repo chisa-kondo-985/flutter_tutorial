@@ -106,7 +106,7 @@ class _FormState extends State<ApplicationBody> {
 
   // Prepare keys for radio button.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _genderText = '';
+  String? selectedGender;
 
   // Prepare the variable and function for the CupertinoPicker.
   int _selectedLocation = 0;
@@ -175,40 +175,53 @@ class _FormState extends State<ApplicationBody> {
               textAlign: TextAlign.start,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Radio(
-                value: '男性',
-                groupValue: _genderText,
-                onChanged: (value) {
-                  setState(() {
-                    _genderText = value!;
-                  });
-                },
-              ),
-              const Text('男性'),
-              Radio(
-                value: '女性',
-                groupValue: _genderText,
-                onChanged: (value) {
-                  setState(() {
-                    _genderText = value!;
-                  });
-                },
-              ),
-              const Text('女性'),
-              Radio(
-                value: 'その他',
-                groupValue: _genderText,
-                onChanged: (value) {
-                  setState(() {
-                    _genderText = value!;
-                  });
-                },
-              ),
-              const Text('その他'),
-            ],
+          FormField(
+            builder: (FormFieldState<String> radioState) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Radio<String>(
+                    value: '男性',
+                    groupValue: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                        radioState.didChange(value);
+                      });
+                    },
+                  ),
+                  const Text('男性'),
+                  Radio<String>(
+                    value: '女性',
+                    groupValue: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                        radioState.didChange(value);
+                      });
+                    },
+                  ),
+                  const Text('女性'),
+                  Radio<String>(
+                    value: 'その他',
+                    groupValue: selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedGender = value;
+                        radioState.didChange(value);
+                      });
+                    },
+                  ),
+                  const Text('その他'),
+                ],
+              );
+            },
+            validator: (selectedGender) {
+              if (selectedGender == null) {
+                return '性別を選択してください';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 40,
@@ -261,7 +274,7 @@ class _FormState extends State<ApplicationBody> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NextPage(
                           textFieldValue: _controller.text,
-                          radioValue: _genderText,
+                          radioValue: selectedGender,
                           pickerValue: _locationNames[_selectedLocation],
                         )));
               }

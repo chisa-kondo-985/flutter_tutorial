@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NextPage extends StatelessWidget {
   final String textFieldValue;
-  final String radioValue;
+  final String? radioValue;
   final String pickerValue;
 
   NextPage({
