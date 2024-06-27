@@ -1,7 +1,6 @@
 // import material.dart package.
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import './nextpage.dart';
 
 // Prepare items for the Location list.
@@ -84,7 +83,11 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
         ),
         // === Application Body ===
-        body: const ApplicationBody(),
+        body: const Center(
+          child: SingleChildScrollView(
+            child: ApplicationBody(),
+          ),
+        ),
         // === Application Background Color ===
         backgroundColor: Colors.white,
       ),
