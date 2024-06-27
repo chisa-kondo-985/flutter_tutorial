@@ -107,7 +107,8 @@ class _FormState extends State<ApplicationBody> {
 
   // Prepare keys for radio button.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? selectedGender;
+  String? _selectedGender;
+  bool? _isGenderValid;
 
   // Prepare the variable and function for the CupertinoPicker.
   final TextEditingController _hometownTextController = TextEditingController(text: '選択してください');
@@ -177,54 +178,56 @@ class _FormState extends State<ApplicationBody> {
               textAlign: TextAlign.start,
             ),
           ),
-          FormField(
-            builder: (FormFieldState<String> radioState) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
                 children: [
                   Radio<String>(
                     value: '男性',
-                    groupValue: selectedGender,
+                    groupValue: _selectedGender,
                     onChanged: (value) {
                       setState(() {
-                        selectedGender = value;
-                        radioState.didChange(value);
+                        _selectedGender = value;
+                        _isGenderValid = true;
                       });
                     },
                   ),
                   const Text('男性'),
                   Radio<String>(
                     value: '女性',
-                    groupValue: selectedGender,
+                    groupValue: _selectedGender,
                     onChanged: (value) {
                       setState(() {
-                        selectedGender = value;
-                        radioState.didChange(value);
+                        _selectedGender = value;
+                        _isGenderValid = true;
                       });
                     },
                   ),
                   const Text('女性'),
                   Radio<String>(
                     value: 'その他',
-                    groupValue: selectedGender,
+                    groupValue: _selectedGender,
                     onChanged: (value) {
                       setState(() {
-                        selectedGender = value;
-                        radioState.didChange(value);
+                        _selectedGender = value;
+                        _isGenderValid = true;
                       });
                     },
                   ),
                   const Text('その他'),
                 ],
-              );
-            },
-            validator: (selectedGender) {
-              if (selectedGender == null) {
-                return '性別を選択してください';
-              }
-              return null;
-            },
+              ),
+            ],
           ),
+          if (_isGenderValid == false)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 0.2),
+              child: Text(
+                '性別を選択してください',
+                style: TextStyle(color: Color.fromARGB(255, 200, 19, 16), fontSize: 12),
+              ),
+            ),
           const SizedBox(
             height: 40,
           ),
@@ -292,11 +295,20 @@ class _FormState extends State<ApplicationBody> {
           // === Send button ===
           ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
+              if (_selectedGender == null) {
+                setState(() {
+                  _isGenderValid = false;
+                });
+              } else {
+                setState(() {
+                  _isGenderValid = true;
+                });
+              }
+              if (_formKey.currentState!.validate() && _isGenderValid == true) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NextPage(
                           textFieldValue: _nameTextController.text,
-                          radioValue: selectedGender,
+                          radioValue: _selectedGender,
                           pickerValue: _locationNames[_selectedLocation],
                         )));
               }
