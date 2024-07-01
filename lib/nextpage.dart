@@ -5,7 +5,8 @@ class NextPage extends StatelessWidget {
   final String? radioValue;
   final String pickerValue;
 
-  NextPage({
+  const NextPage({
+    super.key,
     required this.textFieldValue,
     required this.radioValue,
     required this.pickerValue,
