@@ -1,6 +1,7 @@
 // import material.dart package.
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './nextpage.dart';
 
 // Prepare items for the Location list.
@@ -141,6 +142,34 @@ class _FormState extends State<ApplicationBody> {
     );
   }
 
+  // Initialize the form data.
+  @override
+  void initState() {
+    super.initState();
+    _loadFormData();
+  }
+
+  // Load the form data.
+  _loadFormData() async {
+    SharedPreferences formData = await SharedPreferences.getInstance();
+    setState(() {
+      _nameTextController.text = formData.getString('userName') ?? '';
+      _selectedGender = formData.getString('userGender');
+      String savedHometown = formData.getString('userHometown') ?? '';
+      _hometownTextController.text = savedHometown;
+      _selectedLocation = _locationNames.indexOf(savedHometown);
+    });
+  }
+
+  // Save the form data.
+  _saveFormData() async {
+    SharedPreferences formData = await SharedPreferences.getInstance();
+    formData.setString('userName', _nameTextController.text);
+    formData.setString('userGender', _selectedGender ?? '');
+    formData.setString('userHometown', _hometownTextController.text);
+  }
+
+  // Build the application body's widget.
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -308,11 +337,12 @@ class _FormState extends State<ApplicationBody> {
                 });
               }
               if (_formKey.currentState!.validate() && _isGenderValid == true) {
+                _saveFormData();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => NextPage(
                           textFieldValue: _nameTextController.text,
                           radioValue: _selectedGender,
-                          pickerValue: _locationNames[_selectedLocation],
+                          pickerValue: _hometownTextController.text,
                         )));
               }
             },
