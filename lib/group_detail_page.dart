@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import definition of the Group class and Member class.
-import 'main.dart';
+import 'group.dart';
 
 class GroupDetailPage extends StatelessWidget {
   final Group group;
@@ -12,7 +11,7 @@ class GroupDetailPage extends StatelessWidget {
     return Scaffold(
       // === Application Bar ===
       appBar: AppBar(
-        title: const Text('band info'),
+        title: const Text('Details'),
         backgroundColor: Colors.blue.shade400,
         foregroundColor: Colors.white,
         centerTitle: true,
@@ -22,12 +21,12 @@ class GroupDetailPage extends StatelessWidget {
         children: [
           Image.asset(group.groupImage),
           const SizedBox(height: 10),
-          Text('結成年: ${group.yearFormed}', style: const TextStyle(fontSize: 16)),
+          Text('Year Established: ${group.yearFormed}', style: const TextStyle(fontSize: 16)),
           const SizedBox(height: 10),
-          const Text('メンバー: ', style: TextStyle(fontSize: 16)),
+          const Text('Members: ', style: TextStyle(fontSize: 16)),
           ...group.members.map((member) => ListTile(
                 title: Text(member.name, style: const TextStyle(fontSize: 20)),
-                subtitle: Text('年齢: ${member.age}歳, 役割: ${member.role}'),
+                subtitle: Text('Age: ${member.age}, Role: ${member.role}'),
               ))
         ],
       ),
