@@ -115,7 +115,7 @@ class _FormState extends State<ApplicationBody> {
   bool? _isGenderValid;
 
   // Prepare the variable and function for the CupertinoPicker.
-  final TextEditingController _hometownTextController = TextEditingController(text: '選択してください');
+  final TextEditingController _hometownTextController = TextEditingController();
   int _selectedLocation = -1;
   void _showDialog(Widget child) {
     // This is the showCupertinoModalPopup function.
@@ -147,6 +147,7 @@ class _FormState extends State<ApplicationBody> {
   void initState() {
     super.initState();
     _loadFormData();
+    // _deleteFormData();
   }
 
   // Load the form data.
@@ -156,7 +157,11 @@ class _FormState extends State<ApplicationBody> {
       _nameTextController.text = formData.getString('userName') ?? '';
       _selectedGender = formData.getString('userGender');
       String savedHometown = formData.getString('userHometown') ?? '';
-      _hometownTextController.text = savedHometown;
+      if (savedHometown == '') {
+        _hometownTextController.text = '選択してください';
+      } else {
+        _hometownTextController.text = savedHometown;
+      }
       _selectedLocation = _locationNames.indexOf(savedHometown);
     });
   }
@@ -168,6 +173,15 @@ class _FormState extends State<ApplicationBody> {
     formData.setString('userGender', _selectedGender ?? '');
     formData.setString('userHometown', _hometownTextController.text);
   }
+
+  // Delete the form data.
+  // _deleteFormData() async {
+  //   SharedPreferences formData = await SharedPreferences.getInstance();
+  //   await formData.remove('userName');
+  //   await formData.remove('userGender');
+  //   await formData.remove('userHometown');
+  //   _hometownTextController.text = '選択してください';
+  // }
 
   // Build the application body's widget.
   @override
