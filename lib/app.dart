@@ -49,25 +49,33 @@ class SearchAddressState extends State<ApplicationBody> {
   Address? _address;
   int searched = 0;
 
+  // Get the address by http connection.
   Future<void> fetchAddress(String zipcode) async {
     String url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=$zipcode';
 
     try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        final addressResponse = Response.convertFromJsonToDartObject(jsonData);
+      // Send Get request, and wait until can get the response.
+      final httpResponse = await http.get(Uri.parse(url));
+      // If the status code is 200,
+      if (httpResponse.statusCode == 200) {
+        // Decode http response.
+        final decodedJson = jsonDecode(httpResponse.body);
+        // Convert form Json object (as a Dart's Map<String, dynamic>) to Response object's instance.
+        final apiResponse = Response.fromJson(decodedJson);
+        // Redraw the UI.
         setState(() {
-          _resultMessage = addressResponse.message;
-          _address = addressResponse.address;
+          _resultMessage = apiResponse.message;
+          _address = apiResponse.address;
           ++searched;
         });
+        // If the status code is NOT 200,
       } else {
         setState(() {
-          _resultMessage = 'Failed to load address: ${response.statusCode}';
+          _resultMessage = 'Failed to load address: ${httpResponse.statusCode}';
           _address = null;
         });
       }
+      // If some Exception happen,
     } catch (message) {
       setState(() {
         _resultMessage = 'Error: $message';
@@ -125,6 +133,7 @@ class SearchAddressState extends State<ApplicationBody> {
               child: Text(_resultMessage!),
             ),
           ],
+          // Widgets with condition by using the spread operator.
           if (_address == null && searched >= 1) ...[
             const SizedBox(
               height: 20,
@@ -138,9 +147,19 @@ class SearchAddressState extends State<ApplicationBody> {
             ),
             SizedBox(
               width: 300,
-              child: Text(
-                '${_address!.address1}${_address!.address2}${_address!.address3}',
-                textAlign: TextAlign.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '郵便番号: ${_address!.zipcode}',
+                  ),
+                  Text(
+                    '住所: ${_address!.address1}${_address!.address2}${_address!.address3}',
+                  ),
+                  Text(
+                    '読み方: ${_address!.kana1}${_address!.kana2}${_address!.kana3}',
+                  ),
+                ],
               ),
             ),
           ],

@@ -7,15 +7,15 @@ class Response {
 
   Response({required this.message, required this.address, required this.status});
 
-  factory Response.convertFromJsonToDartObject(Map json) {
-    // If the zipcode exists, results will have Address object.
-    // If the zipcode doesn't exist, results will be null.
-    var address = json['results'] != null ? Address.convertFromJsonToDartObject(json['results'][0]) : null;
+  factory Response.fromJson(Map responseJson) {
+    // If the zipcode exists, address will have Address object.
+    // If the zipcode doesn't exist, address will be null.
+    var address = responseJson['results'] != null ? Address.fromJson(responseJson['results'][0]) : null;
 
     return Response(
-      message: json['message'],
+      message: responseJson['message'],
       address: address,
-      status: json['status'],
+      status: responseJson['status'],
     );
   }
 }

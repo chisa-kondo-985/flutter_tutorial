@@ -18,7 +18,7 @@ class Address {
       required this.prefcode,
       required this.zipcode});
 
-  factory Address.convertFromJsonToDartObject(Map<String, dynamic> json) {
+  factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       address1: json['address1'] as String,
       address2: json['address2'] as String,
