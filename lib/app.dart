@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'group.dart';
-import 'member.dart';
-import 'group_detail_page.dart';
+import 'package:http/http.dart' as http;
+import 'response.dart';
+import 'address.dart';
 
 // === This widget is the root of this application. ===
 class MyApp extends StatelessWidget {
@@ -12,93 +13,158 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Decide application basic settings.
     return MaterialApp(
-      title: 'Bands (Flutter)',
+      title: 'API connection (Flutter)',
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: true,
       ),
       home: Scaffold(
-        // === Application Bar ===
-        appBar: AppBar(
-          title: const Text('Bands'),
-          backgroundColor: Colors.blue.shade400,
-          foregroundColor: Colors.white,
-          centerTitle: true,
-        ),
-        // === Application Body ===
-        body: ApplicationBody(),
-        // === Application Background Color ===
-        backgroundColor: Colors.grey.shade100,
-      ),
+          // === Application Bar ===
+          appBar: AppBar(
+            title: const Text('Search Your Address'),
+            backgroundColor: Colors.blue.shade400,
+            foregroundColor: Colors.white,
+            centerTitle: true,
+          ),
+          // === Application Body ===
+          body: const ApplicationBody(),
+          // === Application Background Color ===
+          backgroundColor: Colors.white),
     );
   }
 }
 
+class ApplicationBody extends StatefulWidget {
+  const ApplicationBody({super.key});
+
+  @override
+  SearchAddressState createState() => SearchAddressState();
+}
+
 // === This widget is the body element of this application. ===
-class ApplicationBody extends StatelessWidget {
-  ApplicationBody({super.key});
-  final List<Group> groups = [
-    Group(
-      groupName: 'The Beatles',
-      groupImage: 'assets/images/Beatles.jpeg',
-      yearFormed: 1960,
-      members: [
-        Member(name: 'John Lennon', age: 40, role: 'Vocals & Guitar'),
-        Member(name: 'Paul McCartney', age: 79, role: 'Vocals & Bass Guitar'),
-        Member(name: 'George Harrison', age: 58, role: 'Guitar & Vocals'),
-        Member(name: 'Ringo Starr', age: 81, role: 'Drums & Vocals'),
-      ],
-    ),
-    Group(
-      groupName: 'The Rolling Stones',
-      groupImage: 'assets/images/The_Rolling_Stones.jpg',
-      yearFormed: 1962,
-      members: [
-        Member(name: 'Mick Jagger', age: 78, role: 'Vocals'),
-        Member(name: 'Keith Richards', age: 77, role: 'Guitar'),
-        Member(name: 'Charlie Watts', age: 80, role: 'Drums'),
-        Member(name: 'Ronnie Wood', age: 74, role: 'Guitar'),
-      ],
-    ),
-    Group(
-      groupName: 'Queen',
-      groupImage: 'assets/images/Queen.jpg',
-      yearFormed: 1970,
-      members: [
-        Member(name: 'Freddie Mercury', age: 45, role: 'Vocals & Piano'),
-        Member(name: 'Brian May', age: 76, role: 'Guitar & Vocals'),
-        Member(name: 'Roger Taylor', age: 75, role: 'Drums & Vocals'),
-        Member(name: 'John Deacon', age: 73, role: 'Bass Guitar'),
-      ],
-    ),
-  ];
+class SearchAddressState extends State<ApplicationBody> {
+  final _formkey = GlobalKey<FormState>();
+  final TextEditingController _zipcodeController = TextEditingController();
+  String? _resultMessage;
+  Address? _address;
+  int searched = 0;
+
+  // Get the address by http connection.
+  Future<void> fetchAddress(String zipcode) async {
+    String url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=$zipcode';
+
+    try {
+      // Send Get request, and wait until can get the response.
+      final httpResponse = await http.get(Uri.parse(url));
+      // If the status code is 200,
+      if (httpResponse.statusCode == 200) {
+        // Decode http response.
+        final decodedJson = jsonDecode(httpResponse.body);
+        // Convert form Json object (as a Dart's Map<String, dynamic>) to Response object's instance.
+        final apiResponse = Response.fromJson(decodedJson);
+        // Redraw the UI.
+        setState(() {
+          _resultMessage = apiResponse.message;
+          _address = apiResponse.address;
+          ++searched;
+        });
+        // If the status code is NOT 200,
+      } else {
+        setState(() {
+          _resultMessage = 'Failed to load address: ${httpResponse.statusCode}';
+          _address = null;
+        });
+      }
+      // If some Exception happen,
+    } catch (message) {
+      setState(() {
+        _resultMessage = 'Error: $message';
+        _address = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      // Set the number of the list items.
-      itemCount: groups.length,
-      // Define what is shown in the list item.
-      itemBuilder: (context, index) {
-        final group = groups[index];
-        return Card(
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(16),
-              tileColor: Colors.white,
-              title: Text(group.groupName),
-              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GroupDetailPage(group: group),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Form(
+            key: _formkey,
+            child: SizedBox(
+              width: 300,
+              child: TextFormField(
+                autofocus: true,
+                maxLength: 8,
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  labelText: '郵便番号',
+                ),
+                controller: _zipcodeController,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '郵便番号を入力してください';
+                  } else if (value.length < 7) {
+                    return '郵便番号を正しく入力してください';
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final zipcode = _zipcodeController.text;
+              if (_formkey.currentState!.validate()) {
+                fetchAddress(zipcode);
+              }
+            },
+            child: const Text('Search'),
+          ),
+          if (_resultMessage != null) ...[
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: 300,
+              child: Text(_resultMessage!),
+            ),
+          ],
+          // Widgets with condition by using the spread operator.
+          if (_address == null && searched >= 1) ...[
+            const SizedBox(
+              height: 20,
+            ),
+            const Text('この郵便番号は無効です',
+                textAlign: TextAlign.center, style: TextStyle(color: Color.fromARGB(255, 182, 26, 15))),
+          ],
+          if (_address != null) ...[
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: 300,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '郵便番号: ${_address!.zipcode}',
                   ),
-                );
-              },
-            ));
-      },
+                  Text(
+                    '住所: ${_address!.address1}${_address!.address2}${_address!.address3}',
+                  ),
+                  Text(
+                    '読み方: ${_address!.kana1}${_address!.kana2}${_address!.kana3}',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

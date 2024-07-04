@@ -37,6 +37,7 @@ dependencies:
 
   # The following adds the shared_preferences to restore data in the device.
   shared_preferences: ^2.2.3
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
