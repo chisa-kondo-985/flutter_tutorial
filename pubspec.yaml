@@ -58,6 +58,11 @@ flutter:
     - assets/images/Beatles.jpeg
     - assets/images/Queen.jpg
     - assets/images/The_Rolling_Stones.jpg
+    - assets/icons/bass_guitar.png
+    - assets/icons/drums.png
+    - assets/icons/guitar.png
+    - assets/icons/mic.png
+    - assets/icons/piano.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

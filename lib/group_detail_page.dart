@@ -24,10 +24,16 @@ class GroupDetailPage extends StatelessWidget {
           Text('Year Established: ${group.yearFormed}', style: const TextStyle(fontSize: 16)),
           const SizedBox(height: 10),
           const Text('Members: ', style: TextStyle(fontSize: 16)),
-          ...group.members.map((member) => ListTile(
-                title: Text(member.name, style: const TextStyle(fontSize: 20)),
-                subtitle: Text('Age: ${member.age}, Role: ${member.role}'),
-              ))
+          ...group.members.map(
+            (member) => ListTile(
+              title: Text(member.name, style: const TextStyle(fontSize: 20)),
+              subtitle: Text('Age: ${member.age}'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: member.roles.map((role) => role.roleIcon()).toList(),
+              ),
+            ),
+          ),
         ],
       ),
     );

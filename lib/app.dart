@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'group.dart';
 import 'member.dart';
+import 'role.dart';
 import 'group_detail_page.dart';
 
 // === This widget is the root of this application. ===
@@ -38,15 +39,17 @@ class MyApp extends StatelessWidget {
 class ApplicationBody extends StatelessWidget {
   ApplicationBody({super.key});
   final List<Group> groups = [
+    // Create Group instances.
     Group(
       groupName: 'The Beatles',
       groupImage: 'assets/images/Beatles.jpeg',
       yearFormed: 1960,
+      // Create members as a List by using Member instance.
       members: [
-        Member(name: 'John Lennon', age: 40, role: 'Vocals & Guitar'),
-        Member(name: 'Paul McCartney', age: 79, role: 'Vocals & Bass Guitar'),
-        Member(name: 'George Harrison', age: 58, role: 'Guitar & Vocals'),
-        Member(name: 'Ringo Starr', age: 81, role: 'Drums & Vocals'),
+        Member(name: 'John Lennon', age: 40, roles: [Role.vocals, Role.guitar]),
+        Member(name: 'Paul McCartney', age: 79, roles: [Role.vocals, Role.bassGuitar]),
+        Member(name: 'George Harrison', age: 58, roles: [Role.guitar, Role.vocals]),
+        Member(name: 'Ringo Starr', age: 81, roles: [Role.drums, Role.vocals]),
       ],
     ),
     Group(
@@ -54,10 +57,10 @@ class ApplicationBody extends StatelessWidget {
       groupImage: 'assets/images/The_Rolling_Stones.jpg',
       yearFormed: 1962,
       members: [
-        Member(name: 'Mick Jagger', age: 78, role: 'Vocals'),
-        Member(name: 'Keith Richards', age: 77, role: 'Guitar'),
-        Member(name: 'Charlie Watts', age: 80, role: 'Drums'),
-        Member(name: 'Ronnie Wood', age: 74, role: 'Guitar'),
+        Member(name: 'Mick Jagger', age: 78, roles: [Role.vocals]),
+        Member(name: 'Keith Richards', age: 77, roles: [Role.guitar]),
+        Member(name: 'Charlie Watts', age: 80, roles: [Role.drums]),
+        Member(name: 'Ronnie Wood', age: 74, roles: [Role.guitar]),
       ],
     ),
     Group(
@@ -65,10 +68,10 @@ class ApplicationBody extends StatelessWidget {
       groupImage: 'assets/images/Queen.jpg',
       yearFormed: 1970,
       members: [
-        Member(name: 'Freddie Mercury', age: 45, role: 'Vocals & Piano'),
-        Member(name: 'Brian May', age: 76, role: 'Guitar & Vocals'),
-        Member(name: 'Roger Taylor', age: 75, role: 'Drums & Vocals'),
-        Member(name: 'John Deacon', age: 73, role: 'Bass Guitar'),
+        Member(name: 'Freddie Mercury', age: 45, roles: [Role.vocals, Role.piano]),
+        Member(name: 'Brian May', age: 76, roles: [Role.guitar, Role.vocals]),
+        Member(name: 'Roger Taylor', age: 75, roles: [Role.drums, Role.vocals]),
+        Member(name: 'John Deacon', age: 73, roles: [Role.bassGuitar]),
       ],
     ),
   ];
@@ -79,6 +82,9 @@ class ApplicationBody extends StatelessWidget {
       // Set the number of the list items.
       itemCount: groups.length,
       // Define what is shown in the list item.
+      // context represents the specific position in the widget tree.
+      // index represents item's index during processing in the function.
+      // Index will increase from 0 to itemCount's number one by one.
       itemBuilder: (context, index) {
         final group = groups[index];
         return Card(
