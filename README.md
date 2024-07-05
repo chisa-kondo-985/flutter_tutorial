@@ -47,13 +47,16 @@
 - バンドグループとメンバーはそれぞれクラスを作成する
 
 - Enumクラスを使用して、バントの役割を定義する
-- 役割ごとに表示を変更する（今回は役割ごとにアイコンをつけることにしました）。
-<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/16c4f1ae-0d53-4a6a-93bf-f78f39587cfc" width="200">
+- 役割ごとに表示を変更する
+る（今回は役割ごとにアイコンをつけることにしました）。
+<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/034d6fcf-ec66-485e-bb5d-90ca5237cece" width="200">
 <br><br>
 
 ◼️ 課題5: 住所検索
 - 入力フォームに郵便番号を入力して「検索」ボタンを押すと、検索結果の住所が表示される
+<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/b7cbe395-ef5b-4b01-b55a-5da42bb3c353" width="200">
 <br><br>
+
 
 ◼️ 
 
