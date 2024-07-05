@@ -15,7 +15,7 @@
 - 数字の部分を「次へ」ボタンに変更
 - 数字を入力して「次へ」ボタンを押すと、違うページに画面遷移して入力した文字が画面中央に表示されるようにする
 - 数字以外の文字を入力すると、入力エラーのダイアログを出す
-![question1-2](https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/91c930ee-03b7-4535-b479-c5e891460bfc)
+<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/91c930ee-03b7-4535-b479-c5e891460bfc" width="200">
 
 ◼️ 
 
