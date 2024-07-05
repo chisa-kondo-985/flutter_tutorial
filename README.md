@@ -1,16 +1,18 @@
 # flutter_tutorial
 
-A new Flutter project.
+このプロジェクトには、PSP 株式会社の Flutter の入門課題をやった結果をアップロードしています。
 
-## Getting Started
+##
 
-This project is a starting point for a Flutter application.
+◼️ 課題 1-1:レイアウトを変える
 
-A few resources to get you started if this is your first Flutter project:
+- 背景の色を変える（例えばピンク）
+- 文字（’You have pushed the button this many times:’）のサイズを大きくする
+- 画面の上半分の真ん中に文字、下半分の真ん中に数字が表示されるようにする
+![layout1](https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/e6145faf-3c51-4c3f-8f0e-c8f3cb055736)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## リンク集
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Flutter の入門課題](https://note.com/psp_tech/n/n4fb6bf4afc4a)
+- [トレーナーの方の解答例の解説](https://note.com/psp_tech/n/n458b782a5242)
+
