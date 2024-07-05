@@ -9,7 +9,7 @@
 - 背景の色を変える（例えばピンク）
 - 文字（’You have pushed the button this many times:’）のサイズを大きくする
 - 画面の上半分の真ん中に文字、下半分の真ん中に数字が表示されるようにする
-<img src="[layout1](https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/e6145faf-3c51-4c3f-8f0e-c8f3cb055736)" width="200">
+<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/e6145faf-3c51-4c3f-8f0e-c8f3cb055736" width="200">
 
 ## リンク集
 
