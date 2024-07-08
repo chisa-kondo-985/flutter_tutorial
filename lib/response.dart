@@ -1,21 +1,24 @@
 import 'package:flutter_tutorial/address.dart';
 
 class Response {
-  final String? message;
-  final Address? address;
-  final int status;
+  final int id;
+  final String name;
+  final String userName;
+  final String email;
+  final Address address;
 
-  Response({required this.message, required this.address, required this.status});
+  Response({
+    required this.id,
+    required this.name,
+    required this.userName,
+    required this.email,
+    required this.address,
+  });
 
-  factory Response.fromJson(Map responseJson) {
-    // If the zipcode exists, address will have Address object.
-    // If the zipcode doesn't exist, address will be null.
-    var address = responseJson['results'] != null ? Address.fromJson(responseJson['results'][0]) : null;
-
-    return Response(
-      message: responseJson['message'],
-      address: address,
-      status: responseJson['status'],
-    );
-  }
+  Response.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int,
+        name = json['name'] as String,
+        userName = json['username'] as String,
+        email = json['email'] as String,
+        address = Address.fromJson(json['address']);
 }
