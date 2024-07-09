@@ -39,11 +39,11 @@ class ApplicationBody extends StatefulWidget {
   const ApplicationBody({super.key});
 
   @override
-  State<StatefulWidget> createState() => GetUserDataState();
+  State<StatefulWidget> createState() => UserListPageState();
 }
 
 // === This widget is the body element of this application. ===
-class GetUserDataState extends State<ApplicationBody> {
+class UserListPageState extends State<ApplicationBody> {
   // Get the address by http connection.
   Future<List<Response>> fetchAddress() async {
     String url = 'https://jsonplaceholder.typicode.com/users';
@@ -56,7 +56,7 @@ class GetUserDataState extends State<ApplicationBody> {
         // Decode http response.
         // DecodedJson remains in json format structure and becomes Map format ("" => '').
         final decodedJson = jsonDecode(httpResponse.body);
-        // Convert from decodedJson to Response object's instance, and put in the list.
+        // Convert from json format structure to Response object's instance, and add in the new list (apiResponse).
         List<Response> apiResponse = [];
         for (var json in decodedJson) {
           apiResponse.add(Response.fromJson(json));
@@ -72,23 +72,92 @@ class GetUserDataState extends State<ApplicationBody> {
     }
   }
 
+  // Prepare flags for sorting.
+  bool sortById = false;
+  bool sortByUserName = false;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Response>>(
         future: fetchAddress(),
         builder: (BuildContext context, AsyncSnapshot<List<Response>> snapshot) {
           List<Widget> children;
-          // If the state is while loading the data.
+          // If the state is during loading the data, show the progress indicator.
           if (snapshot.connectionState == ConnectionState.waiting) {
             children = <Widget>[const Center(child: CircularProgressIndicator())];
-            // If finished loading data,
           } else if (snapshot.hasData) {
+            // If finished loading data, show sort buttons and listView.
+            // === Sort Buttons ===
+            List<Response> userDataList = List.from(snapshot.data!);
+
+            // If the id flag is true, sort list by id.
+            if (sortById) {
+              userDataList.sort((a, b) => a.id.compareTo(b.id));
+            } else if (sortByUserName) {
+              // If the userName flag is true, sort list by username.
+              userDataList.sort((a, b) => a.userName.compareTo(b.userName));
+            }
+
             children = <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        sortById = true;
+                        sortByUserName = false;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      textStyle: const TextStyle(fontSize: 16),
+                      side: const BorderSide(
+                        color: Colors.black,
+                      ),
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 68),
+                    ),
+                    icon: Image.asset(
+                      'assets/icons/sort.png',
+                      width: 24,
+                    ),
+                    label: const Text('ID'),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        sortById = false;
+                        sortByUserName = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0),
+                      ),
+                      textStyle: const TextStyle(fontSize: 16),
+                      side: const BorderSide(
+                        color: Colors.black,
+                      ),
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                    ),
+                    icon: Image.asset(
+                      'assets/icons/sort.png',
+                      width: 24,
+                    ),
+                    label: const Text('NAME'),
+                  ),
+                ],
+              ),
+              // === User List ===
               Expanded(
                 child: ListView.builder(
-                  itemCount: snapshot.data!.length,
+                  itemCount: userDataList.length,
                   itemBuilder: (context, index) {
-                    var user = snapshot.data![index];
+                    var user = userDataList[index];
                     return ListTile(
                       title: Text(user.userName),
                       subtitle: Text(user.email),
@@ -106,15 +175,15 @@ class GetUserDataState extends State<ApplicationBody> {
                 ),
               )
             ];
-            // If the connection has some errors,
           } else if (snapshot.hasError) {
+            // If the connection has some errors, show error messages.
             children = <Widget>[
               Center(
                 child: Text('Error: ${snapshot.error}'),
               ),
             ];
-            // If couldn't find data,
           } else {
+            // If couldn't find data, show this error message.
             children = <Widget>[
               const Center(child: Text('No data found')),
             ];

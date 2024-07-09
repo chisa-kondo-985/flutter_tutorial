@@ -60,6 +60,8 @@ flutter:
     - assets/images/Beatles.jpeg
     - assets/images/Queen.jpg
     - assets/images/The_Rolling_Stones.jpg
+    - assets/icons/sort.png
+    - assets/icons/sort-reverse.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
