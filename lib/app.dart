@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_tutorial/detail_page.dart';
 import 'package:http/http.dart' as http;
 import 'response.dart';
 
@@ -18,17 +19,18 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Scaffold(
-          // === Application Bar ===
-          appBar: AppBar(
-            title: const Text('Search Your Address'),
-            backgroundColor: Colors.blue.shade400,
-            foregroundColor: Colors.white,
-            centerTitle: true,
-          ),
-          // === Application Body ===
-          body: const ApplicationBody(),
-          // === Application Background Color ===
-          backgroundColor: Colors.white),
+        // === Application Bar ===
+        appBar: AppBar(
+          title: const Text('User List Page'),
+          backgroundColor: Colors.blue.shade400,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        // === Application Body ===
+        body: const ApplicationBody(),
+        // === Application Background Color ===
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }
@@ -37,7 +39,7 @@ class ApplicationBody extends StatefulWidget {
   const ApplicationBody({super.key});
 
   @override
-  GetUserDataState createState() => GetUserDataState();
+  State<StatefulWidget> createState() => GetUserDataState();
 }
 
 // === This widget is the body element of this application. ===
@@ -76,8 +78,10 @@ class GetUserDataState extends State<ApplicationBody> {
         future: fetchAddress(),
         builder: (BuildContext context, AsyncSnapshot<List<Response>> snapshot) {
           List<Widget> children;
+          // If the state is while loading the data.
           if (snapshot.connectionState == ConnectionState.waiting) {
             children = <Widget>[const Center(child: CircularProgressIndicator())];
+            // If finished loading data,
           } else if (snapshot.hasData) {
             children = <Widget>[
               Expanded(
@@ -88,22 +92,33 @@ class GetUserDataState extends State<ApplicationBody> {
                     return ListTile(
                       title: Text(user.userName),
                       subtitle: Text(user.email),
+                      trailing: const Icon(
+                        Icons.navigate_next_rounded,
+                        color: Colors.blue,
+                        size: 32,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (BuildContext context) => DetailPage(user: user)));
+                      },
                     );
                   },
                 ),
               )
             ];
+            // If the connection has some errors,
           } else if (snapshot.hasError) {
             children = <Widget>[
               Center(
                 child: Text('Error: ${snapshot.error}'),
               ),
             ];
+            // If couldn't find data,
           } else {
             children = <Widget>[
               const Center(child: Text('No data found')),
             ];
-          }
+          } // After passed these conditions, the results will be returned in this widget.
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: children,
