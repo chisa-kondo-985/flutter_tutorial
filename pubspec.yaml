@@ -38,6 +38,7 @@ dependencies:
   # The following adds the shared_preferences to restore data in the device.
   shared_preferences: ^2.2.3
   http: ^1.2.1
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +60,8 @@ flutter:
     - assets/images/Beatles.jpeg
     - assets/images/Queen.jpg
     - assets/images/The_Rolling_Stones.jpg
+    - assets/icons/sort.png
+    - assets/icons/sort-reverse.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
