@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'response.dart';
+import 'user_model.dart';
 
 class DetailPage extends StatelessWidget {
-  final Response user;
+  final UserModel user;
 
   const DetailPage({super.key, required this.user});
 
@@ -45,140 +45,65 @@ class DetailPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'ID: ${user.id}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'username: ${user.userName}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
+                      createContent('ID: ${user.id}'),
+                      createContent('username: ${user.userName}'),
                     ],
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Name: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                user.name,
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Name'),
+              createContent(user.name),
               const SizedBox(height: 16),
-              const Text(
-                'E-mail: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                user.email,
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('E-mail'),
+              createContent(user.email),
               const SizedBox(height: 16),
-              const Text(
-                'Zipcode: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                user.address.zipcode,
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Zipcode'),
+              createContent(user.address.zipcode),
               const SizedBox(height: 16),
-              const Text(
-                'Address: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                '${user.address.suite} ${user.address.street} ${user.address.city}',
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Address'),
+              createContent('${user.address.suite} ${user.address.street} ${user.address.city}'),
               const SizedBox(height: 16),
-              const Text(
-                'Geography: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                'Latitude: ${user.address.geography.latitude}',
-                style: const TextStyle(fontSize: 16),
-              ),
-              Text(
-                'Longitude: ${user.address.geography.longitude}',
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Geography'),
+              createContent('Latitude: ${user.address.geography.latitude}'),
+              createContent('Longitude: ${user.address.geography.longitude}'),
               const SizedBox(height: 16),
-              const Text(
-                'Phone: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                user.phone,
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Phone'),
+              createContent(user.phone),
               const SizedBox(height: 16),
-              const Text(
-                'Website: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                user.website,
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Website'),
+              createContent(user.website),
               const SizedBox(height: 16),
-              const Text(
-                'Company: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              Text(
-                'Company Name: ${user.company.companyName}',
-                style: const TextStyle(fontSize: 16),
-              ),
-              Text(
-                'CatchPhrase: ${user.company.catchPhrase}',
-                style: const TextStyle(fontSize: 16),
-              ),
-              Text(
-                'Business: ${user.company.business}',
-                style: const TextStyle(fontSize: 16),
-              ),
+              createHeading('Company'),
+              createContent('Company Name: ${user.company.companyName}'),
+              createContent('CatchPhrase: ${user.company.catchPhrase}'),
+              createContent('Business: ${user.company.business}'),
             ],
           ),
         ),
         // === Application Background Color ===
         backgroundColor: Colors.white,
       ),
+    );
+  }
+
+  // Create headings.
+  createHeading(text) {
+    return Text(
+      '$text:',
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.blue,
+      ),
+    );
+  }
+
+  // Create contents.
+  createContent(text) {
+    return Text(
+      text,
+      style: const TextStyle(fontSize: 16),
     );
   }
 }

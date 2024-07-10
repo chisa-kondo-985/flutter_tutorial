@@ -1,17 +1,17 @@
-import 'package:flutter_tutorial/address.dart';
-import 'package:flutter_tutorial/company.dart';
+import 'package:flutter_tutorial/address_model.dart';
+import 'package:flutter_tutorial/company_model.dart';
 
-class Response {
+class UserModel {
   final int id;
   final String name;
   final String userName;
   final String email;
-  final Address address;
+  final AddressModel address;
   final String phone;
   final String website;
-  final Company company;
+  final CompanyModel company;
 
-  Response({
+  UserModel({
     required this.id,
     required this.name,
     required this.userName,
@@ -22,13 +22,13 @@ class Response {
     required this.company,
   });
 
-  Response.fromJson(Map<String, dynamic> json)
+  UserModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
         name = json['name'] as String,
         userName = json['username'] as String,
         email = json['email'] as String,
-        address = Address.fromJson(json['address']),
+        address = AddressModel.fromJson(json['address']),
         phone = json['phone'] as String,
         website = json['website'] as String,
-        company = Company.fromJson(json['company']);
+        company = CompanyModel.fromJson(json['company']);
 }

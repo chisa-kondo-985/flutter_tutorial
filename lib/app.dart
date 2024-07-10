@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/detail_page.dart';
 import 'package:http/http.dart' as http;
-import 'response.dart';
+import 'user_model.dart';
 
 // === This widget is the root of this application. ===
 class MyApp extends StatelessWidget {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
         ),
         // === Application Body ===
-        body: const ApplicationBody(),
+        body: const UserListPage(),
         // === Application Background Color ===
         backgroundColor: Colors.white,
       ),
@@ -35,17 +35,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ApplicationBody extends StatefulWidget {
-  const ApplicationBody({super.key});
+class UserListPage extends StatefulWidget {
+  const UserListPage({super.key});
 
   @override
   State<StatefulWidget> createState() => UserListPageState();
 }
 
 // === This widget is the body element of this application. ===
-class UserListPageState extends State<ApplicationBody> {
+class UserListPageState extends State<UserListPage> {
   // Get the address by http connection.
-  Future<List<Response>> fetchAddress() async {
+  Future<List<UserModel>> fetchAddress() async {
     String url = 'https://jsonplaceholder.typicode.com/users';
 
     try {
@@ -57,9 +57,9 @@ class UserListPageState extends State<ApplicationBody> {
         // DecodedJson remains in json format structure and becomes Map format ("" => '').
         final decodedJson = jsonDecode(httpResponse.body);
         // Convert from json format structure to Response object's instance, and add in the new list (apiResponse).
-        List<Response> apiResponse = [];
+        List<UserModel> apiResponse = [];
         for (var json in decodedJson) {
-          apiResponse.add(Response.fromJson(json));
+          apiResponse.add(UserModel.fromJson(json));
         }
         return apiResponse;
         // If the status code is NOT 200,
@@ -73,14 +73,15 @@ class UserListPageState extends State<ApplicationBody> {
   }
 
   // Prepare flags for sorting.
-  bool sortById = false;
-  bool sortByUserName = false;
+  bool isSortByUserName = false;
+  // Prepare flags for the button state.
+  bool isNameButtonSelected = false;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Response>>(
+    return FutureBuilder<List<UserModel>>(
         future: fetchAddress(),
-        builder: (BuildContext context, AsyncSnapshot<List<Response>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
           List<Widget> children;
           // If the state is during loading the data, show the progress indicator.
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -88,12 +89,12 @@ class UserListPageState extends State<ApplicationBody> {
           } else if (snapshot.hasData) {
             // If finished loading data, show sort buttons and listView.
             // === Sort Buttons ===
-            List<Response> userDataList = List.from(snapshot.data!);
+            List<UserModel> userDataList = List.from(snapshot.data!);
 
             // If the id flag is true, sort list by id.
-            if (sortById) {
+            if (!isSortByUserName) {
               userDataList.sort((a, b) => a.id.compareTo(b.id));
-            } else if (sortByUserName) {
+            } else if (isSortByUserName) {
               // If the userName flag is true, sort list by username.
               userDataList.sort((a, b) => a.userName.compareTo(b.userName));
             }
@@ -105,11 +106,12 @@ class UserListPageState extends State<ApplicationBody> {
                   OutlinedButton.icon(
                     onPressed: () {
                       setState(() {
-                        sortById = true;
-                        sortByUserName = false;
+                        isSortByUserName = false;
+                        isNameButtonSelected = false;
                       });
                     },
                     style: ElevatedButton.styleFrom(
+                      fixedSize: const Size(190.0, 44.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0.0),
                       ),
@@ -118,7 +120,7 @@ class UserListPageState extends State<ApplicationBody> {
                         color: Colors.black,
                       ),
                       foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 68),
+                      backgroundColor: isNameButtonSelected ? Colors.white : Colors.blue.shade100,
                     ),
                     icon: Image.asset(
                       'assets/icons/sort.png',
@@ -129,11 +131,12 @@ class UserListPageState extends State<ApplicationBody> {
                   OutlinedButton.icon(
                     onPressed: () {
                       setState(() {
-                        sortById = false;
-                        sortByUserName = true;
+                        isSortByUserName = true;
+                        isNameButtonSelected = true;
                       });
                     },
                     style: ElevatedButton.styleFrom(
+                      fixedSize: const Size(190.0, 44.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0.0),
                       ),
@@ -142,7 +145,7 @@ class UserListPageState extends State<ApplicationBody> {
                         color: Colors.black,
                       ),
                       foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                      backgroundColor: isNameButtonSelected ? Colors.blue.shade100 : Colors.white,
                     ),
                     icon: Image.asset(
                       'assets/icons/sort.png',

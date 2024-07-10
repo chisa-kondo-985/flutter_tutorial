@@ -1,13 +1,13 @@
-import 'package:flutter_tutorial/geography.dart';
+import 'package:flutter_tutorial/geography_model.dart';
 
-class Address {
+class AddressModel {
   final String street;
   final String suite;
   final String city;
   final String zipcode;
-  final Geography geography;
+  final GeographyModel geography;
 
-  Address({
+  AddressModel({
     required this.street,
     required this.suite,
     required this.city,
@@ -15,10 +15,10 @@ class Address {
     required this.geography,
   });
 
-  Address.fromJson(Map<String, dynamic> json)
+  AddressModel.fromJson(Map<String, dynamic> json)
       : street = json['street'] as String,
         suite = json['suite'] as String,
         city = json['city'] as String,
         zipcode = json['zipcode'] as String,
-        geography = Geography.fromJson(json['geo']);
+        geography = GeographyModel.fromJson(json['geo']);
 }
