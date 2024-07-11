@@ -58,7 +58,12 @@
 <br><br>
 
 
-◼️ 
+◼️ 課題6: 
+- アプリを開いたときにAPI通信をしてJSONデータを取ってきて一覧表示をする
+- タップして詳細画面へ遷移する
+- リストにソート機能をつける
+<img src="https://github.com/chisa-kondo-985/flutter_tutorial/assets/172559163/58de6410-256c-4cd0-8028-62d4f062ef3d" width="200">
+<br><br>
 
 
 ## リンク集
