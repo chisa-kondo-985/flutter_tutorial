@@ -44,10 +44,9 @@ class UserListPage extends StatefulWidget {
 
 // === This widget is the body element of this application. ===
 class UserListPageState extends State<UserListPage> {
-  // Get the address by http connection.
-  Future<List<UserModel>> fetchAddress() async {
-    String url = 'https://jsonplaceholder.typicode.com/users';
-
+  // Get the users data by http connection.
+  late Future<List<UserModel>> _usersData;
+  Future<List<UserModel>> fetchAddress(url) async {
     try {
       // Send Get request, and wait until can get the response.
       final httpResponse = await http.get(Uri.parse(url));
@@ -78,9 +77,16 @@ class UserListPageState extends State<UserListPage> {
   bool isNameButtonSelected = false;
 
   @override
+  void initState() {
+    super.initState();
+    String url = 'https://jsonplaceholder.typicode.com/users';
+    _usersData = fetchAddress(url);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserModel>>(
-        future: fetchAddress(),
+        future: _usersData,
         builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
           List<Widget> children;
           // If the state is during loading the data, show the progress indicator.
