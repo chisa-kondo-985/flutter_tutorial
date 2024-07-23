@@ -46,7 +46,7 @@ class DetailPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       createContent('ID: ${user.id}'),
-                      createContent('username: ${user.userName}'),
+                      createContent(user.userName),
                     ],
                   ),
                 ],
