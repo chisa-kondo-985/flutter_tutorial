@@ -30,6 +30,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
+            // TODO: ここを治す！
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
               label: 'Notifications',

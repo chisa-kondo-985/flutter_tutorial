@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_tutorial/home_screen.dart';
+import 'package:flutter_tutorial/screen/home_screen.dart';
 
 class UsersDataListScreen extends StatelessWidget {
   final String appBarTitle;
@@ -23,6 +23,12 @@ class UsersDataListScreen extends StatelessWidget {
     }
   }
 
+  Widget createUserDataListTile(json) {
+    return ListTile(
+      title: Text(json['id'].toString()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return HomeScreen(
@@ -42,7 +48,6 @@ class UsersDataListScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      // TODO: ここをメソッド化して、オーバーライドできるようにする！！
       applicationBody: FutureBuilder<List<dynamic>>(
         future: fetchData(),
         builder: (context, snapshot) {
@@ -53,14 +58,17 @@ class UsersDataListScreen extends StatelessWidget {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No data available'));
           } else {
-            return ListView.builder(
+            return ListView.separated(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final item = snapshot.data![index];
-                return ListTile(
-                  title: Text(item['title'] ?? 'No title'),
-                  subtitle: Text(item['body'] ?? 'No body'),
+                final json = snapshot.data![index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                  child: createUserDataListTile(json),
                 );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Container(color: Colors.grey.shade300, height: 2);
               },
             );
           }
