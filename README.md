@@ -68,13 +68,31 @@
   <img src="demo_images/question5.gif" width="200">
   <br><br>
 
-◼️ 課題 6:
+◼️ 課題 6: JSON データを使った一覧・詳細表示
 
-- アプリを開いたときに API 通信を行い、リンク(https://jsonplaceholder.typicode.com/users)を用いて JSON データを取得して一覧表示をする
+- アプリを開いたときに API 通信を行い、リンク(https://jsonplaceholder.typicode.com/users) を用いて JSON データを取得して一覧表示をする
 - タップして詳細画面へ遷移する
 - リストにソート機能をつける（ソートの方法やメソッドは Enum クラスで管理する）
 
   <img src="demo_images/question6-2.gif" width="200">
+  <br><br>
+
+◼️ 課題 7: 2 種類の違うデータを同じような画面でそれぞれ表示させる
+
+- 共通となる部分をまとめたカスタムウィジェット（BaseScreen）を作成する
+- 朝食のメインの派閥を定義した Enum を作成する
+- 朝食のメイン派閥の Card を表示するホーム画面（HomeScreen）を作成する
+- HTTP 通信を行なって、json データを取得し、リストで表示する画面（BaseDetailScreen）を作成する
+  - HTTP 通信は朝食のメイン派閥ごとに違う URL を使用する
+    - パン: https://jsonplaceholder.typicode.com/posts
+    - ご飯: https://jsonplaceholder.typicode.com/comments
+    - 麺: https://jsonplaceholder.typicode.com/albums
+    - 芋: https://jsonplaceholder.typicode.com/todos
+    - 食べない: https://jsonplaceholder.typicode.com/users
+- 親クラス（BaseDetailScreen）を継承して子クラス（〇〇 GroupScreen）を作成する
+- 選んだメイン派閥の Card ごとにそれぞれの画面（〇〇 GroupScreen）に遷移できるようにする
+
+  <img src="demo_images/question7.gif" width="200">
   <br><br>
 
 ## リンク集
