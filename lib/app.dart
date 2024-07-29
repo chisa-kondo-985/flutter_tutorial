@@ -100,9 +100,9 @@ class UserListPageState extends State<UserListPage> {
             // === Sort Buttons ===
             PopupMenuButton(
               onSelected: (SortOption selectedSortMethod) {
+                sortOption = selectedSortMethod;
                 setState(() {
-                  sortOption = selectedSortMethod;
-                  sortOption.sort(userDataList);
+                  userDataList = sortOption.sort(userDataList);
                 });
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<SortOption>>[
@@ -148,7 +148,6 @@ class UserListPageState extends State<UserListPage> {
                   if (userDataList.isEmpty) {
                     userDataList = snapshot.data!;
                   }
-                  userDataList = sortOption.sort(userDataList);
                   return ListView.builder(
                     itemCount: userDataList.length,
                     itemBuilder: (context, index) {
