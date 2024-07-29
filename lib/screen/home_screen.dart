@@ -1,48 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tutorial/breakfast_main.dart';
+import 'package:flutter_tutorial/base/base_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final PreferredSizeWidget appBar;
-  final Widget applicationBody;
-
-  const HomeScreen({
-    super.key,
-    required this.appBar,
-    required this.applicationBody,
-  });
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Training for using extends',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        useMaterial3: true,
+    return BaseScreen(
+      customAppBar: AppBar(
+        title: const Text('朝ごはんの派閥'),
+        backgroundColor: Colors.blue.shade400,
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-      home: Scaffold(
-        // === Application Bar ===
-        appBar: appBar,
-        // === Application body ===
-        body: applicationBody,
-        // === Application Bottom Navigation Bar ===
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            // TODO: ここを治す！
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-        ),
-        // === Application Background Color ===
-        backgroundColor: Colors.white,
+      customAppBody: ListView.builder(
+        itemCount: BreakfastMain.values.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            color: Colors.white,
+            child: ListTile(
+                title: Text(BreakfastMain.values[index].description),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BreakfastMain.values[index].screen));
+                }),
+          );
+        },
       ),
     );
   }

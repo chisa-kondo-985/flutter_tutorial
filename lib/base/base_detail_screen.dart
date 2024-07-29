@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_tutorial/screen/home_screen.dart';
+import 'package:flutter_tutorial/base/base_screen.dart';
 
-class UsersDataListScreen extends StatelessWidget {
+class BaseDetailScreen extends StatelessWidget {
   final String appBarTitle;
   final String url;
 
-  const UsersDataListScreen({
+  const BaseDetailScreen({
     super.key,
     required this.url,
     required this.appBarTitle,
@@ -31,8 +31,8 @@ class UsersDataListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomeScreen(
-      appBar: AppBar(
+    return BaseScreen(
+      customAppBar: AppBar(
         title: Text(appBarTitle),
         leading: IconButton(
           icon: const Icon(
@@ -48,7 +48,7 @@ class UsersDataListScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
-      applicationBody: FutureBuilder<List<dynamic>>(
+      customAppBody: FutureBuilder<List<dynamic>>(
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

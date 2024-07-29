@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/screen/users_data_list_screen.dart';
+import 'package:flutter_tutorial/base/base_detail_screen.dart';
 
-class NoneGroupScreen extends UsersDataListScreen {
+class NoneGroupScreen extends BaseDetailScreen {
   const NoneGroupScreen({super.key, required super.appBarTitle, required super.url});
 
   @override

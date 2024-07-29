@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/screen/users_data_list_screen.dart';
+import 'package:flutter_tutorial/base/base_detail_screen.dart';
 
-class PotatoGroupScreen extends UsersDataListScreen {
+class PotatoGroupScreen extends BaseDetailScreen {
   const PotatoGroupScreen({super.key, required super.appBarTitle, required super.url});
 
   @override
