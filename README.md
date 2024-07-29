@@ -91,6 +91,7 @@
     - 食べない: https://jsonplaceholder.typicode.com/users
 - 親クラス（BaseDetailScreen）を継承して子クラス（〇〇 GroupScreen）を作成する
 - 選んだメイン派閥の Card ごとにそれぞれの画面（〇〇 GroupScreen）に遷移できるようにする
+- 親クラスをオーバーライドし、子クラスのListで表示する内容を変更する
 
   <img src="demo_images/question7.gif" width="200">
   <br><br>
